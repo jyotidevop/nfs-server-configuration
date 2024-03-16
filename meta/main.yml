@@ -1,0 +1,9 @@
+galaxy_info:
+  author: jyoti chaudhary
+  description: nfs-server configuration
+
+  min_ansible_version: 2.1
+  
+  platforms:
+    - name: RHEL
+      version: 9

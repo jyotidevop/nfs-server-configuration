@@ -1,0 +1,39 @@
+---
+- name: installing NFS-utils
+  yum:
+       name: "{{ pkg }}"
+       state: present
+- name: enable nfs-server
+  service:
+        name: nfs-server
+        state: started
+        enabled: true
+              # - name: enable firewall in the system
+              #service:
+              #name: firewalld
+              # state: started
+              #enabled: true
+              #- name: add nfs in firewalld
+              # firewalld:
+              #service: nfs
+              #state: enabled
+              #permanent: true
+              #immediate: true
+- name: creating directory to be shared
+  file:
+        path: /games
+        state: directory
+        owner: root
+        group: root
+        mode: '2755'
+- name: adding file
+  template:
+        src:  games.j2
+        dest: /etc/exports
+  notify: restart nfs
+- name: ensuaring that /game is exported
+  command: "showmount -e"
+  register: output
+- debug:
+        msg: "{{ output.stdout_lines }}"
+
